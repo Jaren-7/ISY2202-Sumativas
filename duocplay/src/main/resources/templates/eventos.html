@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DUOCPLAY - Eventos</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-content">
+
+            <a th:href="@{/}" class="logo">DUOCPLAY</a>
+
+            <nav>
+                <a th:href="@{/}">Inicio</a>
+                <a th:href="@{/eventos}">Eventos</a>
+
+                <!-- Usuario no autenticado -->
+                <a th:if="${!usuarioAutenticado}"
+                th:href="@{/login}"
+                class="btn-login">
+                    Iniciar sesión
+                </a>
+
+                <!-- Usuario autenticado -->
+                <form th:if="${usuarioAutenticado}"
+                    th:action="@{/logout}"
+                    method="post">
+
+                    <button type="submit" class="btn-login">
+                        Cerrar sesión
+                    </button>
+
+                </form>
+            </nav>
+
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <section class="section-content">
+
+            <h1>Eventos Gamer</h1>
+
+            <p>
+                Encuentra torneos y competencias de tus videojuegos favoritos.
+            </p>
+
+        </section>
+
+        <section class="search-section">
+
+            <h2>Buscar eventos</h2>
+
+            <form th:action="@{/eventos}" method="get">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="nombre">Nombre del evento</label>
+
+                        <input
+                            type="text"
+                            id="nombre"
+                            name="nombre"
+                            placeholder="Ej: Torneo"
+                            th:value="${nombre}">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="videojuego">Videojuego</label>
+
+                        <input
+                            type="text"
+                            id="videojuego"
+                            name="videojuego"
+                            placeholder="Ej: Valorant"
+                            th:value="${videojuego}">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="categoria">Categoría</label>
+
+                        <input
+                            type="text"
+                            id="categoria"
+                            name="categoria"
+                            placeholder="Ej: FPS"
+                            th:value="${categoria}">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="modalidad">Modalidad</label>
+
+                        <input
+                            type="text"
+                            id="modalidad"
+                            name="modalidad"
+                            placeholder="Ej: Online"
+                            th:value="${modalidad}">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="ubicacion">Ubicación</label>
+
+                        <input
+                            type="text"
+                            id="ubicacion"
+                            name="ubicacion"
+                            placeholder="Ej: Santiago"
+                            th:value="${ubicacion}">
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit" class="btn-primary">
+                        Buscar eventos
+                    </button>
+
+                    <a th:href="@{/eventos}" class="btn-secondary">
+                        Limpiar filtros
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <section class="section-content">
+
+            <h2>Eventos disponibles</h2>
+
+            <div class="event-grid">
+
+                <article class="event-card"
+                         th:each="evento : ${eventos}">
+
+                    <h3 th:text="${evento.nombre}">
+                        Nombre del evento
+                    </h3>
+
+                    <p>
+                        <strong>Videojuego:</strong>
+                        <span th:text="${evento.videojuego}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Categoría:</strong>
+                        <span th:text="${evento.categoria}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Modalidad:</strong>
+                        <span th:text="${evento.modalidad}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Ubicación:</strong>
+                        <span th:text="${evento.ubicacion != null ? evento.ubicacion : 'No especificada'}"></span>
+                    </p>
+
+                    <a th:href="@{/eventos/{id}(id=${evento.id_evento})}"
+                       class="btn-secondary">
+
+                        Ver detalle
+
+                    </a>
+
+                </article>
+
+            </div>
+
+            <div class="empty-message"
+                 th:if="${#lists.isEmpty(eventos)}">
+
+                <p>No se encontraron eventos disponibles.</p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+
+        <p>DUOCPLAY - Comunidad Gamer</p>
+
+    </footer>
+
+</body>
+</html>

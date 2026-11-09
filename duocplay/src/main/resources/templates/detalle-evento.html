@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DUOCPLAY - Detalle del evento</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="container nav-content">
+
+            <a th:href="@{/}" class="logo">DUOCPLAY</a>
+
+            <nav>
+                <a th:href="@{/}">Inicio</a>
+                <a th:href="@{/eventos}">Eventos</a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn-login">
+                        Cerrar sesión
+                    </button>
+                </form>
+            </nav>
+
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <section class="section-content">
+
+            <a th:href="@{/eventos}" class="back-link">
+                ← Volver a eventos
+            </a>
+
+            <div class="detail-card">
+
+                <div class="section-header">
+
+                    <h1 th:text="${evento.nombre}">
+                        Nombre del evento
+                    </h1>
+
+                    <span class="status"
+                          th:text="${evento.estado}">
+                        ACTIVO
+                    </span>
+
+                </div>
+
+                <div class="detail-section">
+
+                    <h2>Descripción</h2>
+
+                    <p th:text="${evento.descripcion != null
+                        ? evento.descripcion
+                        : 'Sin descripción disponible.'}">
+                    </p>
+
+                </div>
+
+                <div class="detail-section">
+
+                    <h2>Información del evento</h2>
+
+                    <div class="detail-grid">
+
+                        <div>
+                            <strong>Videojuego</strong>
+                            <p th:text="${evento.videojuego}"></p>
+                        </div>
+
+                        <div>
+                            <strong>Categoría</strong>
+                            <p th:text="${evento.categoria}"></p>
+                        </div>
+
+                        <div>
+                            <strong>Modalidad</strong>
+                            <p th:text="${evento.modalidad}"></p>
+                        </div>
+
+                        <div>
+                            <strong>Ubicación</strong>
+                            <p th:text="${evento.ubicacion != null
+                                ? evento.ubicacion
+                                : 'No especificada'}">
+                            </p>
+                        </div>
+
+                        <div>
+                            <strong>Fecha de inicio</strong>
+                            <p th:text="${evento.fecha_inicio != null
+                                ? evento.fecha_inicio
+                                : 'No especificada'}">
+                            </p>
+                        </div>
+
+                        <div>
+                            <strong>Fecha de término</strong>
+                            <p th:text="${evento.fecha_fin != null
+                                ? evento.fecha_fin
+                                : 'No especificada'}">
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="detail-section"
+                     th:if="${evento.url_evento != null
+                         and !#strings.isEmpty(evento.url_evento)}">
+
+                    <h2>Enlace del evento</h2>
+
+                    <a th:href="${evento.url_evento}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn-primary">
+
+                        Visitar evento
+
+                    </a>
+
+                </div>
+
+                <div class="detail-section">
+
+                    <strong>Organizador:</strong>
+
+                    <span th:text="${evento.usuario_creador}"></span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+
+        <p>DUOCPLAY - Comunidad Gamer</p>
+
+    </footer>
+
+</body>
+</html>

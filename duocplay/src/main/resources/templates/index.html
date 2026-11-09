@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUOCPLAY - Inicio</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container nav-content">
+
+            <a th:href="@{/}" class="logo">DUOCPLAY</a>
+
+            <nav>
+                <a th:href="@{/}">Inicio</a>
+                <a th:href="@{/eventos}">Eventos</a>
+
+                <!-- Usuario no autenticado -->
+                <a th:if="${!usuarioAutenticado}"
+                th:href="@{/login}"
+                class="btn-login">
+                    Iniciar sesión
+                </a>
+
+                <!-- Usuario autenticado -->
+                <form th:if="${usuarioAutenticado}"
+                    th:action="@{/logout}"
+                    method="post">
+
+                    <button type="submit" class="btn-login">
+                        Cerrar sesión
+                    </button>
+
+                </form>
+            </nav>
+
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="welcome">
+
+            <h1>Bienvenido a DUOCPLAY</h1>
+
+            <p>
+                Descubre torneos, competencias y eventos
+                relacionados con tus videojuegos favoritos.
+            </p>
+
+            <a th:href="@{/eventos}" class="btn-primary">
+                Explorar eventos
+            </a>
+
+        </section>
+
+        <section class="advertisement">
+
+            <h2>Espacio publicitario</h2>
+
+            <p>
+                Publicidad y anuncios de empresas colaboradoras
+                de la comunidad gamer.
+            </p>
+
+        </section>
+
+        <section class="section-content">
+
+            <div class="section-header">
+                <h2>Eventos recientes</h2>
+
+                <a th:href="@{/eventos}">
+                    Ver todos
+                </a>
+            </div>
+
+
+            <div class="event-grid">
+
+                <article class="event-card"
+                         th:each="evento : ${eventosRecientes}">
+
+                    <h3 th:text="${evento.nombre}">
+                        Nombre del evento
+                    </h3>
+
+                    <p>
+                        <strong>Videojuego:</strong>
+                        <span th:text="${evento.videojuego}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Categoría:</strong>
+                        <span th:text="${evento.categoria}"></span>
+                    </p>
+
+                    <p>
+                        <strong>Modalidad:</strong>
+                        <span th:text="${evento.modalidad}"></span>
+                    </p>
+
+                    <a th:href="@{/eventos/{id}(id=${evento.id_evento})}"
+                       class="btn-secondary">
+                        Ver detalle
+                    </a>
+
+                </article>
+
+            </div>
+
+            <div class="empty-message"
+                 th:if="${#lists.isEmpty(eventosRecientes)}">
+
+                <p>Actualmente no hay eventos disponibles.</p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="footer">
+
+        <p>DUOCPLAY - Comunidad Gamer</p>
+
+    </footer>
+
+</body>
+</html>
