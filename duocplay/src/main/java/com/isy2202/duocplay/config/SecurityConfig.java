@@ -25,13 +25,25 @@ import jakarta.servlet.DispatcherType;
 
 @Configuration 
 public class SecurityConfig {
+
+    private static final String CSP_POLICY =
+    "default-src 'self'; " +
+    "base-uri 'self'; " +
+    "form-action 'self'; " +
+    "frame-ancestors 'self'; " +
+    "object-src 'none'; " +
+    "img-src 'self' data:; " +
+    "style-src 'self'; " +
+    "script-src 'self'; " +
+    "font-src 'self'; " +
+    "connect-src 'self'";
     
     @Bean 
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-@Bean
+    @Bean
     public DaoAuthenticationProvider authenticationProvider(
             UsuarioDetailsService userDetailsService,
             PasswordEncoder passwordEncoder) {
@@ -81,6 +93,12 @@ public class SecurityConfig {
 
             // API sin sesiones y con autenticacion JWT
             .csrf(csrf -> csrf.disable())
+
+            .headers(headers -> headers
+               .contentSecurityPolicy(csp -> csp
+                  .policyDirectives(CSP_POLICY)
+                )
+            )
 
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -150,6 +168,12 @@ public class SecurityConfig {
             DaoAuthenticationProvider authenticationProvider) throws Exception {
 
         http
+
+            .headers(headers -> headers
+                    .contentSecurityPolicy(csp -> csp
+                        .policyDirectives(CSP_POLICY)
+                    )
+            )
 
             .authenticationProvider(authenticationProvider)
 
